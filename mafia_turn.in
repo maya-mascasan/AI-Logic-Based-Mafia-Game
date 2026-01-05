@@ -1,0 +1,35 @@
+set(auto).
+assign(max_weight, 50).
+clear(predicate_elim).
+formulas(assumptions).
+  all y (Blocked(y) <-> (exists x (Role(x,LadyCompanion) & Target(x,y)))).
+  all y (Protected(y) <-> (exists x (Role(x,Doctor) & Target(x,y) & -Blocked(x)))).
+  all y (Dies(y) <-> (exists x (Role(x,Killer) & Target(x,y) & -Blocked(x) & -Protected(y)))).
+
+  serban != maya.
+  serban != vlad.
+  serban != mihai.
+  serban != raisa.
+  maya != vlad.
+  maya != mihai.
+  maya != raisa.
+  vlad != mihai.
+  vlad != raisa.
+  mihai != raisa.
+  Killer != Doctor.
+  Killer != LadyCompanion.
+  Killer != Cop.
+  Killer != Villager.
+  Doctor != LadyCompanion.
+  Doctor != Cop.
+  Doctor != Villager.
+  LadyCompanion != Cop.
+  LadyCompanion != Villager.
+  Cop != Villager.
+
+  all x all r (Role(x,r) <-> ((x=serban & r=Cop) | (x=maya & r=Doctor) | (x=vlad & r=LadyCompanion) | (x=mihai & r=Villager) | (x=raisa & r=Killer))).
+  all x all y (Target(x,y) <-> ((x=serban & y=raisa) | (x=maya & y=maya) | (x=raisa & y=maya))).
+end_of_list.
+formulas(goals).
+  all x -Dies(x).
+end_of_list.
